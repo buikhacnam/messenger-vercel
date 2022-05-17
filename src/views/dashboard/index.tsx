@@ -83,7 +83,7 @@ const Dashboard: React.FC<IndexProps> = () => {
 								<Route
 									path='/*'
 									element={
-										<Navigate to='/schedule/calendar' />
+										<Navigate to='/chat' />
 									}
 								/>
 							</Routes>

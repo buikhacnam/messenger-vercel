@@ -138,7 +138,7 @@ const App: React.FC<AppProps> = () => {
 						<Route
 							path='/*'
 							element={
-								<LazyComponent component={'LazyDashboard'} />
+								<LazyComponent component={'LazyChat'} />
 							}
 						/>
 					</Routes>

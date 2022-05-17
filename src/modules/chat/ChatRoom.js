@@ -6,6 +6,7 @@ import RenderPaginationSimple from '../../components/PaginationSimple';
 import { Button, Input, message as m, Avatar, Select }  from 'antd';
 import moment from 'moment';
 import generateAvatarName from '../../utils/common/generate-avatar-name';
+import { SpinOverlay } from '../../components/LoadingSpinner';
 
 const initialSearch = {
 	message: { value: '' },
@@ -257,6 +258,7 @@ const ChatRoom = () => {
         {userData.connected?
         <div className="chat-box">
             <div className="member-list">
+            <p style={{fontWeight: 800, color: 'cornflowerblue'}}>Messenger</p>
             <Select onClear={() => setSearchUser(null)}  onChange={(v) => { privateChats.set(v,[]);
                             setPrivateChats(new Map(privateChats));
                             setSearchUser(null)}} allowClear value={searchUser} showSearch placeholder='find a friend to talk' onSearch={e => setSearchUser(e)}  style={{ width: '100%' }} showArrow={false}>
@@ -336,20 +338,10 @@ const ChatRoom = () => {
             </div>}
         </div>
         :
-        <div className="register">
-            {/* <input
-                id="user-name"
-                placeholder="Enter your name"
-                name="userName"
-                value={userData.username}
-                onChange={handleUsername}
-                margin="normal"
-              />
-              <button type="button" onClick={registerUser}>
-                    connect
-              </button>  */}
-              Loading...
-        </div>}
+       <SpinOverlay/>}
+       <div style={{marginTop: 24, textAlign: 'center'}}>
+            <span style={{fontSize: '0.8rem'}}>Created by <a href='https://buinam.com/' target={'_blank'}>Bui Nam</a> with ❤️</span>
+       </div>
     </div>
     )
 }
