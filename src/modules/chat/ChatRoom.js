@@ -7,6 +7,7 @@ import { Button, Input, message as m, Avatar, Select }  from 'antd';
 import moment from 'moment';
 import generateAvatarName from '../../utils/common/generate-avatar-name';
 import { SpinOverlay } from '../../components/LoadingSpinner';
+import Cookies from 'js-cookie'
 
 const initialSearch = {
 	message: { value: '' },
@@ -14,6 +15,8 @@ const initialSearch = {
 let stompClient =null;
 const readStore = {}
 
+let token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJidWluYW0iLCJyb2xlcyI6WyJST0xFX0FETUlOIiwiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODg4OC9hcGkvdjEvc2VjdXJpdHkvbG9naW4iLCJleHAiOjE2NTM0NDU3NDh9.iaErNP8F6A5Js0GCz-i-jCg2ouNcvxgef9ErZAM0bNQ'
+let accessToken = Cookies.get('crm-access')
 const ChatRoom = () => {
     const messagesEndRef = useRef(null)
     const tabRef = useRef(localStorage.getItem('userName' || ''))
@@ -45,17 +48,12 @@ const ChatRoom = () => {
     }, [userData]);
 
     useEffect(() => {
-        if (localStorage.getItem('userName')) {
-            registerUser();
-            fetchConversation(localStorage.getItem('userName'))
-            
-        }
+        registerUser();
+        fetchConversation() 
     }, [])
 
     useEffect(() => {
-        if (localStorage.getItem('userName')) {
-            getPrivateChatHistory(localStorage.getItem('userName'), tab, page.current, page.pageSize)
-        }
+        getPrivateChatHistory(tab, page.current, page.pageSize)
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [page])
 
@@ -74,13 +72,13 @@ const ChatRoom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
     }
 
-    const seenMessageAction = async (sender, receiver) => {
-        const res = await seenMessage(sender, receiver)
+    const seenMessageAction = async (sender) => {
+        const res = await seenMessage(sender)
         console.log('seen message res', res)
     }
 
-    const fetchConversation = async (userName) => {
-        const res = await getConversations(userName);
+    const fetchConversation = async () => {
+        const res = await getConversations();
         console.log('res', res);
         const data = res?.data?.responseData || [];
         if(data && data?.length > 0){
@@ -95,10 +93,10 @@ const ChatRoom = () => {
         }
     }
 
-    const getPrivateChatHistory = async (sender, receiver, pageNumber = 1, pageSize = 15) => {
+    const getPrivateChatHistory = async ( receiver, pageNumber = 1, pageSize = 15) => {
         const query = `&message=${message.value || ''}`
         
-        const res = await getChatHistoryOfTwoUsers(sender, receiver, pageNumber, pageSize, query);
+        const res = await getChatHistoryOfTwoUsers( receiver, pageNumber, pageSize, query);
         console.log("rrrrrrrrrrrrrrrrrrr", res)
         const conversation = res?.data?.responseData?.listObject || []
         setCount(res?.data?.responseData?.count || 0)
@@ -120,7 +118,7 @@ const ChatRoom = () => {
     }
 
     const connect =()=>{
-        let Sock = new SockJS(`${process.env.REACT_APP_BACKEND_URL}/ws`);
+        let Sock = new SockJS(`${process.env.REACT_APP_BACKEND_URL}/ws?tokenWS=${accessToken}`);
         // let Sock = new SockJS('http://192.168.0.149:9998/api/websocket');
 
         stompClient = over(Sock);
@@ -275,12 +273,12 @@ const ChatRoom = () => {
                         }} className={`member ${tab==="CHATROOM" && "active"}`}>Loa lớn</li> */}
                     {[...privateChats.keys()].map((name,index)=>(
                         <li 
-                            onClick={name === tab? () => { seenMessageAction(userData.username, name)} : ()=>{
+                            onClick={name === tab? () => { seenMessageAction(name)} : ()=>{
                                 tabRef.current = name
                                 setTab(name)
                                 setPage({current: 1, pageSize: 15})
                                 setRead({...read, [name]: 0})
-                                seenMessageAction(userData.username, name)
+                                seenMessageAction(name)
                                 console.log('onclick name tab', name, userData.username)
                             }} 
                             className={`member ${tabRef.current===name && "active"}`} key={index}>

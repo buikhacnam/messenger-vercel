@@ -54,16 +54,16 @@ export const test2 = () => {
 	return API.get(`/api/v1/chat-history/124`)
 }
 
-export const getChatHistoryOfTwoUsers = (sender: string, receiver: string,pageNumber: number, pageSize: number, q: string) => {
-	return API.get(`/api/v1/chat-history/private?senderName=${sender}&receiverName=${receiver}&pageNumber=${pageNumber}&pageSize=${pageSize}${q}`)
+export const getChatHistoryOfTwoUsers = (receiver: string,pageNumber: number, pageSize: number, q: string) => {
+	return API.get(`/api/v1/chat-history/private?receiverName=${receiver}&pageNumber=${pageNumber}&pageSize=${pageSize}${q}`)
 }
 
-export const getConversations = (sender: string) => {
-	return API.get(`/api/v1/chat-history/conversation/${sender}`)
+export const getConversations = () => {
+	return API.get(`/api/v1/chat-history/conversation`)
 }
 
-export const seenMessage = (sender:string, receiver:string) => {
-	return API.get(`/api/v1/chat-history/seen?senderName=${sender}&receiverName=${receiver}`)
+export const seenMessage = (sender:string) => {
+	return API.get(`/api/v1/chat-history/seen?senderName=${sender}`)
 }
 
 
