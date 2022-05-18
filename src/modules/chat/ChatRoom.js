@@ -15,7 +15,6 @@ const initialSearch = {
 let stompClient =null;
 const readStore = {}
 
-let token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJidWluYW0iLCJyb2xlcyI6WyJST0xFX0FETUlOIiwiUk9MRV9VU0VSIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODg4OC9hcGkvdjEvc2VjdXJpdHkvbG9naW4iLCJleHAiOjE2NTM0NDU3NDh9.iaErNP8F6A5Js0GCz-i-jCg2ouNcvxgef9ErZAM0bNQ'
 let accessToken = Cookies.get('crm-access')
 const ChatRoom = () => {
     const messagesEndRef = useRef(null)
