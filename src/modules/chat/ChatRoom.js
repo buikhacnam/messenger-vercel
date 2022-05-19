@@ -255,10 +255,10 @@ const ChatRoom = () => {
         {userData.connected?
         <div className="chat-box">
             <div className="member-list">
-            <p style={{fontWeight: 800, color: 'cornflowerblue'}}>Messenger</p>
+            <Avatar style={{marginRight: 5}} className="avatar self">{generateAvatarName(userData.username)}</Avatar><span style={{fontWeight: 800, color: 'cornflowerblue'}}>{userData.username}</span>
             <Select onClear={() => setSearchUser(null)}  onChange={(v) => { privateChats.set(v,[]);
                             setPrivateChats(new Map(privateChats));
-                            setSearchUser(null)}} allowClear value={searchUser} showSearch placeholder='find a friend to talk' onSearch={e => setSearchUser(e)}  style={{ width: '100%' }} showArrow={false}>
+                            setSearchUser(null)}} allowClear value={searchUser} showSearch placeholder='find a friend to talk' onSearch={e => setSearchUser(e)}  style={{marginTop: 10, width: '100%' }} showArrow={false}>
                     {user.map((item) => {
                         return <Select.Option key={item.id} value={item.userName}><span 
                         
@@ -270,8 +270,9 @@ const ChatRoom = () => {
                         tabRef.current = 'CHATROOM'
                         setTab("CHATROOM")
                         }} className={`member ${tab==="CHATROOM" && "active"}`}>Loa lớn</li> */}
-                    {[...privateChats.keys()].map((name,index)=>(
-                        <li 
+                    {[...privateChats.keys()].map((name,index)=>{
+                        if(name === userData.username) return null
+                        return <li 
                             onClick={name === tab? () => { seenMessageAction(name)} : ()=>{
                                 tabRef.current = name
                                 setTab(name)
@@ -283,7 +284,7 @@ const ChatRoom = () => {
                             className={`member ${tabRef.current===name && "active"}`} key={index}>
                                 {(read[name])? name + ` (${read[name]})`:  name}
                         </li>
-                    ))}
+                    })}
                 </ul>
               
             </div>
