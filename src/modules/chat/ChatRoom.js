@@ -258,7 +258,7 @@ const ChatRoom = () => {
             <Avatar style={{marginRight: 5}} className="avatar self">{generateAvatarName(userData.username)}</Avatar><span style={{fontWeight: 800, color: 'cornflowerblue'}}>{userData.username}</span>
             <Select onClear={() => setSearchUser(null)}  onChange={(v) => { privateChats.set(v,[]);
                             setPrivateChats(new Map(privateChats));
-                            setSearchUser(null)}} allowClear value={searchUser} showSearch placeholder='find a friend to talk' onSearch={e => setSearchUser(e)}  style={{marginTop: 10, width: '100%' }} showArrow={false}>
+                            setSearchUser(null)}} allowClear value={searchUser} showSearch placeholder='find someone to chat' onSearch={e => setSearchUser(e)}  style={{marginTop: 10, width: '100%' }} showArrow={false}>
                     {user.map((item) => {
                         return <Select.Option key={item.id} value={item.userName}><span 
                         
@@ -330,7 +330,7 @@ const ChatRoom = () => {
                 </ul>
 
                 <div className="send-message">
-                    <Input size='large' type="text" className="input-message" placeholder="enter the message" value={userData.message} onChange={handleMessage} /> 
+                    <Input size='large' type="text" className="input-message" placeholder="enter the message" value={userData.message} onChange={handleMessage} onPressEnter={sendPrivateValue} /> 
                     <Button type='primary' size='large'  className="send-button" onClick={sendPrivateValue}>send</Button>
                 </div>
             </div>}
